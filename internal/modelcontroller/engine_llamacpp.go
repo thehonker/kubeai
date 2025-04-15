@@ -30,17 +30,17 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
-			modelPathArg := "--model=" + "/model/" + c.Source.url.modelParam
-			args = append(args, modelPathArg)
+			modelPath := "/model/" + c.Source.url.modelParam
+			args = append(args, "--model", modelPath)
 		} else {
-			modelPathArg := "--model=" + "/model/"
-			args = append(args, modelPathArg)
+			modelPath :=  "/model/"
+			args = append(args, "--model", modelPath)
 		}
 	}
 
-	args = append(args, "--alias=" + m.Name)
-	args = append(args, "--host=" + "[::]")
-	args = append(args, "--port=" + "8000")
+	args = append(args, "--alias ", m.Name)
+	args = append(args, "--host ", "[::]")
+	args = append(args, "--port ", "8000")
 
 	args = append(args, m.Spec.Args...)
 
