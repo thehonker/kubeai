@@ -85,6 +85,7 @@ spec:
                 - FasterWhisper
                 - Infinity
                 - Aphrodite
+                - Llamacpp
                 type: string
               env:
                 additionalProperties:

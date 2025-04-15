@@ -61,7 +61,7 @@ type ModelSpec struct {
 	Features []ModelFeature `json:"features"`
 
 	// Engine to be used for the server process.
-	// +kubebuilder:validation:Enum=OLlama;VLLM;FasterWhisper;Infinity;Aphrodite
+	// +kubebuilder:validation:Enum=OLlama;VLLM;FasterWhisper;Infinity;Aphrodite;Llamacpp
 	// +kubebuilder:validation:Required
 	Engine string `json:"engine"`
 
