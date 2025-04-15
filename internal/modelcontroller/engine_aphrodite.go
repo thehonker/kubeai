@@ -18,11 +18,7 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 		ann[kubeaiv1.ModelPodPortAnnotation] = "8000"
 	}
 
-	args := []string{
-		"--served-model-name=" + m.Name,
-		"--host=" + "[::]",
-		"--port=" + "8000",
-	}
+	args := []string{}
 
 	aphroditeModelFlag := c.Source.url.ref
 	if m.Spec.CacheProfile != "" {
@@ -47,6 +43,10 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 			args = append(args, modelPath)
 		}
 	}
+
+	args = append(args, "--served-model-name=" + m.Name)
+	args = append(args, "--host=" + "[::]",)
+	args = append(args, "--port=" + "8000",)
 
 	args = append(args, m.Spec.Args...)
 
