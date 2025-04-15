@@ -87,7 +87,7 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 				{
 					Name:            serverContainerName,
 					Image:           c.Image,
-					Command:         []string{"aphrodite", "run"},
+					Command:         []string{"/app/llama-server"},
 					Args:            args,
 					Env:             env,
 					SecurityContext: r.ModelServerPods.ModelContainerSecurityContext,
