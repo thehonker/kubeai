@@ -31,6 +31,7 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 	// The aphroditeModelFlag can be safely overridden because validation logic ensures
 	// that a model with PVC source and cacheProfile won't be admitted.
 	if c.Source.url.scheme == "pvc" {
+		args = append(args, c.Source.url.ref)
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
