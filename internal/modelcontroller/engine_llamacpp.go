@@ -39,7 +39,7 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 	}
 
 	args = append(args, "--alias", m.Name)
-	args = append(args, "--host", "[::]")
+	args = append(args, "--host", "0.0.0.0")
 	args = append(args, "--port", "8000")
 
 	args = append(args, m.Spec.Args...)
