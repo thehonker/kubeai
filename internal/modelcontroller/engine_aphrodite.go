@@ -33,11 +33,12 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 	// that a model with PVC source and cacheProfile won't be admitted.
 	if c.Source.url.scheme == "pvc" {
 		// If we're loading a model from pvc, we need the full path
-		// Split the url by /, this results in
-		// "pvc:" "" "pvcname" "subdir" "subdir" "filename"
-		path_url := delete_empty(strings.Split(c.Source.url.ref, "/"))
-		path := path_url[3:len(path_url)]
-		args = append(args, "--model=", strings.Join(path, "/"))
+		// Use modelParam to fake it for now
+		if c.Source.url.modelParam != "" {
+			args = append(args, "--model=", c.Source.url.path, '/', c.Source.url.modelParam)
+		} else {
+			args = append(args, "--model=", c.Source.url.path)
+		}
 	}
 
 	args = append(args, m.Spec.Args...)
