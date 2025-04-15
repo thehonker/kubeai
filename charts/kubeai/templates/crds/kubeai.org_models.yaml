@@ -84,6 +84,7 @@ spec:
                 - VLLM
                 - FasterWhisper
                 - Infinity
+                - Aphrodite
                 type: string
               env:
                 additionalProperties:
