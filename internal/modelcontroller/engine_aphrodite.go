@@ -34,7 +34,8 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
-			args = append(args, "--model=", c.Source.url.path, "/", c.Source.url.modelParam)
+			modelPath := "--model=" + c.Source.url.path + "/" + c.Source.url.modelParam
+			args = append(args, modelPath)
 		} else {
 			args = append(args, "--model=", c.Source.url.path)
 		}
