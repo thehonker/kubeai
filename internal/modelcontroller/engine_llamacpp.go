@@ -22,7 +22,7 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 	llamacppModelFlag := c.Source.url.ref
 	if m.Spec.CacheProfile != "" {
 		llamacppModelFlag = modelCacheDir(m)
-		args = append(args, "-m ", llamacppModelFlag)
+		args = append(args, "--model", llamacppModelFlag)
 	}
 	// The aphroditeModelFlag can be safely overridden because validation logic ensures
 	// that a model with PVC source and cacheProfile won't be admitted.
@@ -38,9 +38,9 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 		}
 	}
 
-	args = append(args, "--alias ", m.Name)
-	args = append(args, "--host ", "[::]")
-	args = append(args, "--port ", "8000")
+	args = append(args, "--alias", m.Name)
+	args = append(args, "--host", "[::]")
+	args = append(args, "--port", "8000")
 
 	args = append(args, m.Spec.Args...)
 
