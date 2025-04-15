@@ -2,7 +2,6 @@ package modelcontroller
 
 import (
 	"sort"
-	"strings"
 
 	kubeaiv1 "github.com/substratusai/kubeai/api/k8s/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -35,7 +34,7 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
-			args = append(args, "--model=", c.Source.url.path, '/', c.Source.url.modelParam)
+			args = append(args, "--model=", c.Source.url.path, "/", c.Source.url.modelParam)
 		} else {
 			args = append(args, "--model=", c.Source.url.path)
 		}
