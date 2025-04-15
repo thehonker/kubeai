@@ -33,7 +33,7 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 			modelPath := "--model " + "/model/" + c.Source.url.modelParam
 			args = append(args, modelPath)
 		} else {
-			modelPath := "--model " + c.Source.url.path
+			modelPath := "--model " + "/model/"
 			args = append(args, modelPath)
 		}
 	}
