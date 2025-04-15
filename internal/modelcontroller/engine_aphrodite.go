@@ -24,7 +24,7 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 	if m.Spec.CacheProfile != "" {
 		aphroditeModelFlag = modelCacheDir(m)
 		refSlice := strings.Split(c.Source.url.ref, "/")
-		args = append(args, strings.Join(refSlice[len(refSlice)-2:]), "/")
+		args = append(args, strings.Join(refSlice[len(refSlice)-2:], "/"))
 
 		args = append(args, "--model=", aphroditeModelFlag)
 	}
@@ -32,7 +32,7 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 	// that a model with PVC source and cacheProfile won't be admitted.
 	if c.Source.url.scheme == "pvc" {
 		refSlice := strings.Split(c.Source.url.ref, "/")
-		args = append(args, strings.Join(refSlice[len(refSlice)-2:]), "/")
+		args = append(args, strings.Join(refSlice[len(refSlice)-2:], "/"))
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
@@ -44,9 +44,9 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 		}
 	}
 
-	args = append(args, "--served-model-name=" + m.Name)
-	args = append(args, "--host=" + "[::]",)
-	args = append(args, "--port=" + "8000",)
+	args = append(args, "--served-model-name="+m.Name)
+	args = append(args, "--host="+"[::]")
+	args = append(args, "--port="+"8000")
 
 	args = append(args, m.Spec.Args...)
 
