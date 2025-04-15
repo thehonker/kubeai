@@ -2,6 +2,7 @@ package modelcontroller
 
 import (
 	"sort"
+	"strings"
 
 	kubeaiv1 "github.com/substratusai/kubeai/api/k8s/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -26,12 +27,16 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 	aphroditeModelFlag := c.Source.url.ref
 	if m.Spec.CacheProfile != "" {
 		aphroditeModelFlag = modelCacheDir(m)
+		refSlice := strings.Split(c.Source.url.ref, "/")
+		args = append(args, strings.Join(refSlice[len(refSlice)-2:]), "/")
+
 		args = append(args, "--model=", aphroditeModelFlag)
 	}
 	// The aphroditeModelFlag can be safely overridden because validation logic ensures
 	// that a model with PVC source and cacheProfile won't be admitted.
 	if c.Source.url.scheme == "pvc" {
-		args = append(args, c.Source.url.ref)
+		refSlice := strings.Split(c.Source.url.ref, "/")
+		args = append(args, strings.Join(refSlice[len(refSlice)-2:]), "/")
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
