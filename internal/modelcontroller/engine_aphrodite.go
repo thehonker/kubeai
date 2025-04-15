@@ -37,7 +37,8 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 			modelPath := "--model=" + c.Source.url.path + "/" + c.Source.url.modelParam
 			args = append(args, modelPath)
 		} else {
-			args = append(args, "--model=", c.Source.url.path)
+			modelPath := "--model=" + c.Source.url.path
+			args = append(args, modelPath)
 		}
 	}
 
