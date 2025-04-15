@@ -24,15 +24,11 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 	if m.Spec.CacheProfile != "" {
 		llamacppModelFlag = modelCacheDir(m)
 		refSlice := strings.Split(c.Source.url.ref, "/")
-		args = append(args, strings.Join(refSlice[len(refSlice)-2:], "/"))
-
 		args = append(args, "-m ", llamacppModelFlag)
 	}
 	// The aphroditeModelFlag can be safely overridden because validation logic ensures
 	// that a model with PVC source and cacheProfile won't be admitted.
 	if c.Source.url.scheme == "pvc" {
-		refSlice := strings.Split(c.Source.url.ref, "/")
-		args = append(args, strings.Join(refSlice[len(refSlice)-2:], "/"))
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
