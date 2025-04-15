@@ -149,6 +149,7 @@ const (
 	FasterWhisperEngine = "FasterWhisper"
 	InfinityEngine      = "Infinity"
 	AphroditeEngine     = "Aphrodite"
+	LlamacppEngine      = "Llamacpp"
 )
 
 type Adapter struct {

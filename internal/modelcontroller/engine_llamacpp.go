@@ -10,7 +10,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig) *corev1.Pod {
+func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) *corev1.Pod {
 	lbs := labelsForModel(m)
 	ann := r.annotationsForModel(m)
 	if _, ok := ann[kubeaiv1.ModelPodPortAnnotation]; !ok {
@@ -20,13 +20,13 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 
 	args := []string{}
 
-	aphroditeModelFlag := c.Source.url.ref
+	llamacppModelFlag := c.Source.url.ref
 	if m.Spec.CacheProfile != "" {
-		aphroditeModelFlag = modelCacheDir(m)
+		llamacppModelFlag = modelCacheDir(m)
 		refSlice := strings.Split(c.Source.url.ref, "/")
 		args = append(args, strings.Join(refSlice[len(refSlice)-2:], "/"))
 
-		args = append(args, "--model=", aphroditeModelFlag)
+		args = append(args, "-m ", llamacppModelFlag)
 	}
 	// The aphroditeModelFlag can be safely overridden because validation logic ensures
 	// that a model with PVC source and cacheProfile won't be admitted.
@@ -36,17 +36,17 @@ func (r *ModelReconciler) aphroditePodForModel(m *kubeaiv1.Model, c ModelConfig)
 		// If we're loading a model from pvc, we need the full path
 		// Use modelParam to fake it for now
 		if c.Source.url.modelParam != "" {
-			modelPath := "--model=" + c.Source.url.path + "/" + c.Source.url.modelParam
+			modelPath := "-m " + c.Source.url.path + "/" + c.Source.url.modelParam
 			args = append(args, modelPath)
 		} else {
-			modelPath := "--model=" + c.Source.url.path
+			modelPath := "-m " + c.Source.url.path
 			args = append(args, modelPath)
 		}
 	}
 
-	args = append(args, "--served-model-name="+m.Name)
-	args = append(args, "--host="+"[::]")
-	args = append(args, "--port="+"8000")
+	args = append(args, "--alias " + m.Name)
+	args = append(args, "--host " + "[::]")
+	args = append(args, "--port " + "8000")
 
 	args = append(args, m.Spec.Args...)
 

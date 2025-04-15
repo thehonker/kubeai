@@ -36,6 +36,8 @@ func (r *ModelReconciler) calculatePodPlan(allPods *corev1.PodList, model *kubea
 		podForModel = r.infinityPodForModel(model, modelConfig)
 	case kubeaiv1.AphroditeEngine:
 		podForModel = r.aphroditePodForModel(model, modelConfig)
+	case kubeaiv1.LlamacppEngine:
+		podForModel = r.llamacppPodForModel(model, modelConfig)
 	default:
 		podForModel = r.vLLMPodForModel(model, modelConfig)
 	}
