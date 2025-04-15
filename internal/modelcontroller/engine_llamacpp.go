@@ -23,7 +23,6 @@ func (r *ModelReconciler) llamacppPodForModel(m *kubeaiv1.Model, c ModelConfig) 
 	llamacppModelFlag := c.Source.url.ref
 	if m.Spec.CacheProfile != "" {
 		llamacppModelFlag = modelCacheDir(m)
-		refSlice := strings.Split(c.Source.url.ref, "/")
 		args = append(args, "-m ", llamacppModelFlag)
 	}
 	// The aphroditeModelFlag can be safely overridden because validation logic ensures
