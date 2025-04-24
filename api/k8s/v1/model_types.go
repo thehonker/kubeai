@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -24,7 +25,6 @@ import (
 
 // ModelSpec defines the desired state of Model.
 // +kubebuilder:validation:XValidation:rule="!has(self.cacheProfile) || self.url.startsWith(\"hf://\") || self.url.startsWith(\"s3://\") || self.url.startsWith(\"gs://\") || self.url.startsWith(\"oss://\")", message="cacheProfile is only supported with urls of format \"hf://...\", \"s3://...\", \"gs://...\", or \"oss://...\" at the moment."
-// +kubebuilder:validation:XValidation:rule="!self.url.startsWith(\"s3://\") || has(self.cacheProfile)", message="urls of format \"s3://...\" only supported when using a cacheProfile"
 // +kubebuilder:validation:XValidation:rule="!self.url.startsWith(\"gs://\") || has(self.cacheProfile)", message="urls of format \"gs://...\" only supported when using a cacheProfile"
 // +kubebuilder:validation:XValidation:rule="!self.url.startsWith(\"oss://\") || has(self.cacheProfile)", message="urls of format \"oss://...\" only supported when using a cacheProfile"
 // +kubebuilder:validation:XValidation:rule="!has(self.maxReplicas) || self.minReplicas <= self.maxReplicas", message="minReplicas should be less than or equal to maxReplicas."
@@ -85,6 +85,9 @@ type ModelSpec struct {
 
 	// Env variables to be added to the server process.
 	Env map[string]string `json:"env,omitempty"`
+
+	// Env variables to be added to the server process from Secret or ConfigMap.
+	EnvFrom []corev1.EnvFromSource `json:"envFrom,omitempty"`
 
 	// Replicas is the number of Pod replicas that should be actively
 	// serving the model. KubeAI will manage this field unless AutoscalingDisabled

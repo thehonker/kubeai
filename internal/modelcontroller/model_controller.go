@@ -173,7 +173,12 @@ func (r *ModelReconciler) Reconcile(ctx context.Context, req ctrl.Request) (res 
 		}
 	}()
 
-	plan := r.calculatePodPlan(allPods, model, modelConfig)
+	plan, err := r.calculatePodPlan(allPods, model, modelConfig)
+	if err != nil {
+		log.Error(err, "Failed to calculate pod plan")
+		return ctrl.Result{}, nil
+	}
+
 	if plan.containsActions() {
 		var err error
 		scaled, err = plan.execute(ctx, r.Client, r.Scheme)
@@ -299,6 +304,10 @@ func (r *ModelReconciler) getModelConfig(model *kubeaiv1.Model) (ModelConfig, er
 	// Apply the multiplied requests and limits to the profile.
 	result.Requests = requests
 	result.Limits = limits
+
+	if model.Spec.EnvFrom != nil {
+		result.Source.modelSourcePodAdditions.envFrom = model.Spec.EnvFrom
+	}
 
 	image, err := r.lookupServerImage(model, profile)
 	if err != nil {
