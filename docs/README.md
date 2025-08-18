@@ -1,6 +1,6 @@
 # KubeAI: AI Inferencing Operator
 
-> **🚨 Looking for New Maintainers** 
+> **🚨 No longer actively maintained** 
 > 
 > We are looking for new maintainers to take over this project! If you're interested in becoming a maintainer and helping drive the future of KubeAI, please reach out on our [Discord channel](https://discord.gg/JeXhcmjZVm).
 
