@@ -224,6 +224,7 @@ type ModelServers struct {
 	VLLM          ModelServer `json:"VLLM"`
 	FasterWhisper ModelServer `json:"FasterWhisper"`
 	Infinity      ModelServer `json:"Infinity"`
+	Llamacpp      ModelServer `json:"Llamacpp"`
 }
 
 type ModelServer struct {
