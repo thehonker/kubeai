@@ -84,6 +84,7 @@ spec:
                 - VLLM
                 - FasterWhisper
                 - Infinity
+                - Llamacpp
                 type: string
               env:
                 additionalProperties:
@@ -148,6 +149,7 @@ spec:
                   enum:
                   - TextGeneration
                   - TextEmbedding
+                  - Reranking
                   - SpeechToText
                   type: string
                 type: array

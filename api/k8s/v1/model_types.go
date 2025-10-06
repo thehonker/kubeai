@@ -61,7 +61,7 @@ type ModelSpec struct {
 	Features []ModelFeature `json:"features"`
 
 	// Engine to be used for the server process.
-	// +kubebuilder:validation:Enum=OLlama;VLLM;FasterWhisper;Infinity
+	// +kubebuilder:validation:Enum=OLlama;VLLM;FasterWhisper;Infinity;Llamacpp
 	// +kubebuilder:validation:Required
 	Engine string `json:"engine"`
 
@@ -158,6 +158,7 @@ const (
 	VLLMEngine          = "VLLM"
 	FasterWhisperEngine = "FasterWhisper"
 	InfinityEngine      = "Infinity"
+	Llamacpp            = "Llamacpp"
 )
 
 type Adapter struct {
