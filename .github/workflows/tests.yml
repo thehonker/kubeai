@@ -7,6 +7,11 @@ on:
       - main
   pull_request:
 
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: kubeai-project/kubeai
+
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -20,7 +25,7 @@ jobs:
       - name: Build and export
         uses: docker/build-push-action@v6
         with:
-          tags: substratusai/kubeai
+          tags: ghcr.io/kubeai-project/kubeai:test
           outputs: type=docker,dest=${{ runner.temp }}/kubeai.tar
 
       - name: Upload artifact
@@ -60,6 +65,7 @@ jobs:
         - "engine-ollama-pvc"
         - "model-files"
         - "s3-model"
+        - "lora-adapter"
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -88,16 +94,13 @@ jobs:
 
       - name: Start kind cluster
         run: kind create cluster
-      - name: Free Space before
+
+      - name: Load kubeai image in KinD
         run: |
-          echo "Free space:"
-          df -h
+          kind load docker-image ghcr.io/kubeai-project/kubeai:test
+
       - name: Run the e2e testcase
         run: make test-e2e TEST_CASE=${{ matrix.testcase }}
-      - name: Free Space after
-        run: |
-          echo "Free space:"
-          df -h
 
   e2e-engines:
     runs-on: ubuntu-latest
@@ -138,6 +141,10 @@ jobs:
 
       - name: Start kind cluster
         run: kind create cluster
+
+      - name: Load kubeai image in KinD
+        run: |
+          kind load docker-image ghcr.io/kubeai-project/kubeai:test
 
       - name: Run the e2e testcase
         run: make test-e2e TEST_CASE=engine-${{ matrix.engine }} CACHE_PROFILE=${{ matrix.cacheProfile }}
