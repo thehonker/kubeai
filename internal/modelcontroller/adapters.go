@@ -203,7 +203,7 @@ func (r *ModelReconciler) patchServerAdapterLoader(podSpec *corev1.PodSpec, m *v
 	loaderContainer := corev1.Container{
 		Name:            loaderContainerName,
 		Image:           image,
-		ImagePullPolicy: corev1.PullIfNotPresent,
+		ImagePullPolicy: corev1.PullAlways,
 		Env:             env,
 		SecurityContext: r.ModelServerPods.ModelContainerSecurityContext,
 		Command:         []string{"sleep", "infinity"},

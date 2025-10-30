@@ -84,6 +84,7 @@ spec:
                 - VLLM
                 - FasterWhisper
                 - Infinity
+                - Llamacpp
                 type: string
               env:
                 additionalProperties:
